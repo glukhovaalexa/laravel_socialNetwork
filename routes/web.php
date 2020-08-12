@@ -16,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'WelcomeController@welcome')->name('welcome');
 Route::get('/register', 'AuthController@getSignup')->name('register');
 Route::post('/register', 'AuthController@postSignup')->name('register');
+Route::post('/', 'AuthController@postSignin')->name('auth');
+Route::get('/chat', 'ChatController@getChat')->name('chat');

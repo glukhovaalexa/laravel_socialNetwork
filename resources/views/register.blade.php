@@ -2,7 +2,17 @@
 @section('content')
 <form class="form-signin" method="POST" action=" {{ route('register') }}" novalidate>
     @csrf
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
+
+    <label for="inputPhone" class="sr-only">Phone</label>
+    <input type="phone" name="phone" id="inputPhone"
+        class="form-control mb-2 {{ $errors->has('phone') ? 'is-invalid': '' }}" placeholder="Phone" required=""
+        autofocus="" value="{{ Request::old('phone') }}">
+    @if($errors->has('phone'))
+    <div class="alert alert-danger p-0">
+        {{ $errors->first('phone') }}
+    </div>
+    @endif
 
     <label for="inputName" class="sr-only">User name</label>
     <input type="text" name="userName" id="inputName"

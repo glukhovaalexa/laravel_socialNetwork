@@ -1,5 +1,11 @@
 @extends('layouts.master')
 @section('content')
+@if(Session::has('info'))
+<div class="alert alert-dark" role="alert">
+    {{ Session::get('info')}}
+</div>
+
+@endif
 <form class="form-signin" method="POST" novalidate>
     @csrf
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>

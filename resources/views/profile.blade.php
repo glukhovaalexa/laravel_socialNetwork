@@ -73,10 +73,7 @@
         <div class="content">
             <div class="contact-profile">
                 <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                @foreach($contacts as $contact)
-                    <p class="name">{{ $contact->name }}</p>
-                </a>
-                @endforeach
+                <p>Harvey Specter</p>
                 <div class="social-media">
                     <i class="fa fa-facebook" aria-hidden="true"></i>
                     <i class="fa fa-twitter" aria-hidden="true"></i>
@@ -84,26 +81,7 @@
                 </div>
             </div>
             <div class="messages">
-                <ul>
-                {{ $messages}}
-
-                    @foreach($messages as $message)
-
-                    <li class="{{ ($message->user_id === Auth::user()->id) ? 'replies' : 'sent'}}">
-                        <p>user{{ $message->user_id}}</p>
-                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                        <p>{{ $message->message}}</p>
-                    </li>
-                    @endforeach
-
-                </ul>
-            </div>
-            <div class="message-input">
-                <div class="wrap">
-                    <input type="text" placeholder="Write your message..." />
-                    <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-                    <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-                </div>
+                <h3>Выберите чат</h3>
             </div>
         </div>
     </div>

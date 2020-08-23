@@ -19,6 +19,12 @@ Route::get('/register', 'AuthController@getSignup')->name('register');
 Route::post('/register', 'AuthController@postSignup')->name('register');
 
 Route::post('/', 'AuthController@postSignin')->name('auth');
-Route::get('/chat/{user_id}', 'ChatController@getChat')->name('chat');
+Route::get('/user{user_id}/profile/', 'ChatController@getChat')->name('chat');
+Route::get('/chat/{friend_id}', 'ChatController@getUserChat')->name('chat.user');
+
+
+
+
+
 
 Route::get('/signout', 'AuthController@getLogout')->name('logout');

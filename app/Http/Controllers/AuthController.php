@@ -24,8 +24,16 @@ class AuthController extends Controller
         'password' => Hash::make($request->input('password')),
         'country' => $request->input('userCountry'),
        ]);
+    
+       $user_id = DB::select('select id from users where email = :email', 
+                    ['email' => $request->input('email')]);
+        // $users = DB::table('users')->get();
+        $id = [];
+        foreach ($user_id as $id) {
+            $id = $id->id;
+        } 
 
-       return redirect()->route('chat')->with('info', 'Congratulation!!!');
+       return redirect()->route('chat', ['user_id' => $id])->with('info', 'Congratulation!!!');
 
     }
 

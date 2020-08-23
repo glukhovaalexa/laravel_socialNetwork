@@ -42,7 +42,7 @@ class ChatController extends Controller
         // ->orWhere('to_user_id', $friend_id)
         // ->orWhere('user_id', $user_id)
         // ->get();
-        $messages = DB::table('messages')->leftJoin('users as user', 'user.id', '=', 'messages.user_id')->leftJoin('users as friend', 'friend.id', '=', 'messages.to_user_id')->select('user.name as user_name', 'messages.message as message', 'friend.name as friend_name')
+        $messages = DB::table('messages')->leftJoin('users as user', 'user.id', '=', 'messages.user_id')->leftJoin('users as friend', 'friend.id', '=', 'messages.to_user_id')->select('user.id as user_id', 'user.name as user_name', 'friend.id as friend_id', 'friend.name as friend_name', 'messages.message as message', 'messages.created_at as created_at')
         ->where([
             ['user_id', "$user_id"],
             ['to_user_id', $friend_id],

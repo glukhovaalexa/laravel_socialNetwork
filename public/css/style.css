@@ -21,6 +21,32 @@ a:hover {
   border: .05rem solid #fff;
 }
 
+.contact_wrap{
+  display: flex;
+
+}
+#frame .content .messages ul li.replies .img_chat_mini {
+  order: 1;
+}
+.msg_info{
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+.replies .msg_info{
+  align-items: flex-end;
+  margin-right: 4%;
+
+}
+.sent .msg_info{
+  align-items: flex-start;
+  margin-left: 4%;
+
+}
+
+
+
 
 /*
  * Base structure
@@ -669,12 +695,21 @@ body {
   background-color: rgba(0, 0, 0, 0.3);
 }
 #frame .content .messages ul li {
-  display: inline-block;
+  /* display: inline-block;
   clear: both;
-  float: left;
+  float: left; */
+  display:flex;
+  flex-direction: column;
+
   margin: 15px 15px 5px 15px;
   width: calc(100% - 25px);
   font-size: 0.9em;
+}
+#frame .content .messages ul li.send {
+  align-items: flex-start;
+}
+#frame .content .messages ul li.replies {
+  align-items: flex-end;
 }
 #frame .content .messages ul li:nth-last-child(1) {
   margin-bottom: 20px;
@@ -685,6 +720,14 @@ body {
 #frame .content .messages ul li.sent p {
   background: #435f7a;
   color: #f5f5f5;
+  text-align: right;
+
+}
+#frame .content .messages ul li .msg_created {
+  font-size: 10px;
+}
+#frame .content .messages ul li .msg {
+  width: 100%;
 }
 #frame .content .messages ul li.replies img {
   float: right;
@@ -693,6 +736,7 @@ body {
 #frame .content .messages ul li.replies p {
   background: #f5f5f5;
   float: right;
+  text-align: left;
 }
 #frame .content .messages ul li img {
   width: 22px;

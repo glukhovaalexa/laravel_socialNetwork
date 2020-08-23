@@ -20,7 +20,6 @@
         <div id="sidepanel">
             <div id="profile">
                 <div class="wrap">
-
                     <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
                     <p>{{ Auth::user()->name}}</p>
                     <p>{{ Auth::user()->message}}</p>
@@ -73,8 +72,8 @@
         <div class="content">
             <div class="contact-profile">
                 <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                @foreach($contacts as $contact)
-                    <p class="name">{{ $contact->name }}</p>
+                @foreach($friends as $friend)
+                <p class="name">{{ $friend->name}}</p>
                 </a>
                 @endforeach
                 <div class="social-media">
@@ -85,17 +84,24 @@
             </div>
             <div class="messages">
                 <ul>
-                {{ $messages}}
-
                     @foreach($messages as $message)
-
                     <li class="{{ ($message->user_id === Auth::user()->id) ? 'replies' : 'sent'}}">
-                        <p>user{{ $message->user_id}}</p>
-                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                        <p>{{ $message->message}}</p>
+                        <div class="contact_wrap">
+                            <div class="img_chat_mini">
+                                <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                            </div>
+                            <p>
+                                {{ (($message->user_id === Auth::user()->id) === '') ? $message->friend_name : $message->user_name }}
+                            </p>
+                        </div>
+                        <div class="msg_info">
+                            <p class="msg">{{ $message->message}}</p>
+                            <p class="msg_created">{{ $message->created_at}}</p>
+                        </div>
+
+
                     </li>
                     @endforeach
-
                 </ul>
             </div>
             <div class="message-input">

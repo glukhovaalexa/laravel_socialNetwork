@@ -37,8 +37,12 @@
                 </div>
             </div>
             <div id="search">
-                <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-                <input type="text" placeholder="Search contacts..." />
+                <form method="POST" action="">
+                    <label for=""></label>
+                    <input type=" text" placeholder="Search contacts..." />
+                    <button class="btn btn_search" type="submit"><i class="fa fa-search"
+                            aria-hidden="true"></i>Search</button>
+                </form>
             </div>
             <div id="contacts">
                 <ul>
@@ -69,6 +73,8 @@
                 <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
             </div>
         </div>
+
+
         <div class="content">
             <div class="contact-profile">
                 <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
@@ -106,9 +112,16 @@
             </div>
             <div class="message-input">
                 <div class="wrap">
-                    <input type="text" placeholder="Write your message..." />
-                    <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-                    <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                    <form action="{{ route('chat.sendMsg') }}" method="POST">
+                    @csrf
+                        <input name="message" type="text" placeholder="Write your message..." />
+                        <input name="user_id" type="hidden" value="{{Auth::user()->id}}" />
+                        @foreach($friends as $friend)
+                        <input name="friend_id" type="hidden" value="{{$friend->id}}" />
+                        @endforeach
+                        <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+                        <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                    </form>
                 </div>
             </div>
         </div>

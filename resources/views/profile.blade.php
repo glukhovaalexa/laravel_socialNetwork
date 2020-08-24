@@ -38,8 +38,12 @@
                 </div>
             </div>
             <div id="search">
-                <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-                <input type="text" placeholder="Search contacts..." />
+                <form method="POST" action="">
+                    <label for=""></label>
+                    <input type="text" placeholder="Search contacts..." />
+                    <button class="btn btn_search" type="submit"><i class="fa fa-search"
+                            aria-hidden="true"></i>Search</button>
+                </form>
             </div>
             <div id="contacts">
                 <ul>

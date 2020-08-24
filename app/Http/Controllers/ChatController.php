@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use Auth;
 use App\User;
+use App\Message;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Collection;
 
@@ -40,8 +41,6 @@ class ChatController extends Controller
         ])
         ->get();
 
-        // $last_msg = $friends->join('messages', 'messages.user_id', '=', 'users.id')->get();
-
         $last_msg = DB::table('messages')
         ->where([
             ['user_id', "$user_id"],
@@ -51,8 +50,6 @@ class ChatController extends Controller
             ['user_id', $friend_id],
             ['to_user_id', $user_id],
         ])->latest()->first();
-        
-            // dd($friends, $last_msg);
 
         return view('chat', [
         'contacts' => $contacts,
@@ -60,6 +57,18 @@ class ChatController extends Controller
         'friends' => $friends,
         'last_msg' => $last_msg
         ]);
+    }
+
+    public function sendMsg(Request $request){
+
+            $messages = new Message;
+            $messages->user_id = $request->input('user_id');
+            $messages->to_user_id = $request->input('friend_id');
+            $messages->message = $request->input('message');
+            $messages->save();
+
+            return redirect()->route('chat.user', ['friend_id' => $request->input('friend_id')]);
+     
     }
 
 }

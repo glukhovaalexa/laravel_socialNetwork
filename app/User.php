@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'phone', 'name', 'email', 'password', 'country'
+        'phone', 'name', 'email', 'password', 'country', 'user_id', 'to_user_id', 'message'
     ];
 
     /**
@@ -40,9 +40,6 @@ class User extends Authenticatable
 
     public function message()
     {
-        // return $this->hasOne('App\Phone', 'foreign_key', 'local_key');
-        // где 2й аругемент  - название модели + id, 2й аргумент - если поиск по другому столбцу, не по id
-        // у меня модель user, поєтому оно само подставит id и соцдется со столбцом в базе, и мне нужно чтобы искало по id, а не, допустим по title, поэтому подходи и без аргументов
         return $this->hasMany('App\Message');
     }
 
@@ -65,7 +62,6 @@ class User extends Authenticatable
     public function getContact(){
         $contacts = Contact::all();
         
-        // dd($contacts);
         return $contacts;
     }
 }

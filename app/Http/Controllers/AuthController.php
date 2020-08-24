@@ -43,7 +43,7 @@ class AuthController extends Controller
             $id = $id->id;
         } 
         // return redirect()->route('register.prove');
-       return redirect()->route('chat', ['user_id' => $id])->with('info', 'Congratulation!!!');
+       return redirect()->route('chat', ['user_id' => $id]);
 
     }
 

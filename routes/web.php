@@ -23,6 +23,8 @@ Route::post('/register', 'AuthController@postSignup')->name('register');
 Route::post('/', 'AuthController@postSignin')->name('auth');
 Route::get('/user{user_id}/profile/', 'ChatController@getChat')->name('chat');
 Route::get('/chat/{friend_id}', 'ChatController@getUserChat')->name('chat.user');
+// Route::get('/chat', 'ChatController@getUserChat')->name('chat.user');
+Route::post('/chat', 'ChatController@sendMsg')->name('chat.sendMsg');
 
 
 

@@ -54,7 +54,7 @@
                                 <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
                                 <div class="meta">
                                     <p class="name">{{ $contact->name }}</p>
-                                    <p class="preview">You just got LITT up, Mike.</p>
+                                    <p class="preview">{{$last_msg->message}}</p>
                                 </div>
                             </a>
                             @endforeach
@@ -113,6 +113,7 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('js/index.js') }}"></script>
 </body>
 
 </html>

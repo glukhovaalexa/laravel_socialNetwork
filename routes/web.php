@@ -17,6 +17,8 @@ Route::get('/', 'WelcomeController@welcome')->name('welcome');
 
 Route::get('/register', 'AuthController@getSignup')->name('register');
 Route::post('/register', 'AuthController@postSignup')->name('register');
+// Route::get('/register/prove', 'AuthController@getSignupProve')->name('register.prove');
+// Route::post('/register/prove', 'AuthController@postSignupProve')->name('register.prove.form');
 
 Route::post('/', 'AuthController@postSignin')->name('auth');
 Route::get('/user{user_id}/profile/', 'ChatController@getChat')->name('chat');

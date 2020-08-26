@@ -18,4 +18,8 @@ class BroadcastServiceProvider extends ServiceProvider
 
         require base_path('routes/channels.php');
     }
+    public function shouldDiscoverEvents()
+{
+    return true;
+}
 }

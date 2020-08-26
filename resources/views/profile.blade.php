@@ -38,22 +38,22 @@
                 </div>
             </div>
             <div id="search">
-                <form method="POST" action="">
+                <form class="search" method="POST" action="{{ route('chat', ['user_id' => Auth::user()->id])}}">
+                    @csrf
                     <label for=""></label>
-                    <input type="text" placeholder="Search contacts..." />
+                    <input type="tel" name="search_contact" placeholder="Search contacts..." />
                     <button class="btn btn_search" type="submit"><i class="fa fa-search"
                             aria-hidden="true"></i>Search</button>
                 </form>
             </div>
             <div id="contacts">
+                @if($search_contact)
                 <ul>
-                    <!-- All friends -->
+                    <h4>Результат поиска:</h4>
+                    @foreach($search_contact as $contact)
+
                     <li class="contact">
                         <div class="wrap">
-                            @if(!$contacts->count())
-                            <p>У вас нет чатов!</p>
-                            @else
-                            @foreach($contacts as $contact)
                             <a href="{{ route('chat.user', ['friend_id' => "$contact->id"]) }}">
                                 <span class="contact-status online"></span>
                                 <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
@@ -62,10 +62,37 @@
                                     <p class="preview">You just got LITT up, Mike.</p>
                                 </div>
                             </a>
-                            @endforeach
-                            @endif
                         </div>
                     </li>
+                    <hr style="background-color:white">
+                    @endforeach
+                </ul>
+                @endif
+                <ul>
+                    <h4>Ваши контакты:</h4>
+                    <!-- All friends -->
+                    @if(!$contacts->count())
+                    <p>У вас нет чатов!</p>
+                    @else
+                    <?php $friend_id = ''; ?>
+                    @foreach($contacts as $contact)
+                    <?php $friend_id = $contact->id; ?>
+                    <li class="contact">
+                        <div class="wrap">
+                            <?php $friend_id = ''; ?>
+                            <?php $friend_id = $contact->id; ?>
+                            <a href="{{ route('chat.user', ['friend_id' => "$contact->id"])}}">
+                                <span class="contact-status online"></span>
+                                <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
+                                <div class="meta">
+                                    <p class="name">{{ $contact->name }}</p>
+                                    <p class="preview">You just got LITT up, Mike.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    @endforeach
+                    @endif
                 </ul>
             </div>
             <div id="bottom-bar">
@@ -75,11 +102,13 @@
             </div>
         </div>
         <div class="content">
-            <div class="messages">
-                <h3>Выберите чат</h3>
-            </div>
+            @yield('chat')
+            <!-- <div class="messages"> -->
+            <h3>Выберите чат</h3>
+            <!-- </div> -->
         </div>
     </div>
+    <script src='{{ asset("../resources/js/script.js") }}'></script>
 </body>
 
 </html>

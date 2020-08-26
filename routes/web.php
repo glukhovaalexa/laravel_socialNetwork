@@ -17,18 +17,18 @@ Route::get('/', 'WelcomeController@welcome')->name('welcome');
 
 Route::get('/register', 'AuthController@getSignup')->name('register');
 Route::post('/register', 'AuthController@postSignup')->name('register');
+
+Route::post('/', 'AuthController@postSignin')->name('auth');
+
+/////sms-auth
 // Route::get('/register/prove', 'AuthController@getSignupProve')->name('register.prove');
 // Route::post('/register/prove', 'AuthController@postSignupProve')->name('register.prove.form');
 
-Route::post('/', 'AuthController@postSignin')->name('auth');
 Route::get('/user{user_id}/profile/', 'ChatController@getChat')->name('chat');
+
 Route::get('/chat/{friend_id}', 'ChatController@getUserChat')->name('chat.user');
-// Route::get('/chat', 'ChatController@getUserChat')->name('chat.user');
-Route::post('/chat', 'ChatController@sendMsg')->name('chat.sendMsg');
-
-
-
-
+Route::post('/chat/{friend_id}', 'ChatController@sendMsg')->name('chat.sendMsg');
+Route::post('/user{user_id}/profile/', 'ChatController@getChat')->name('chat.search');
 
 
 Route::get('/signout', 'AuthController@getLogout')->name('logout');

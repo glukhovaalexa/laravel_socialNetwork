@@ -7,7 +7,7 @@
     <label for="inputPhone" class="sr-only">Phone</label>
     <input type="phone" name="phone" id="inputPhone"
         class="form-control mb-2 {{ $errors->has('phone') ? 'is-invalid': '' }}" placeholder="Phone" required=""
-        autofocus="" value="{{ Request::old('phone') }}">
+        autofocus="" value="{{ Request::old('phone') }}" placeholder="380xxxxxxxxx">
     @if($errors->has('phone'))
     <div class="alert alert-danger p-0">
         {{ $errors->first('phone') }}

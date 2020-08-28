@@ -12,6 +12,13 @@ class Kernel extends ConsoleKernel
      *
      * @var array
      */
+
+    protected $middlewareGroups = [
+        'web' => [
+            \App\Http\Middleware\UserActivity::class,
+        ]
+    ];    
+
     protected $commands = [
         //
     ];

@@ -9,12 +9,14 @@ use App\Http\Requests\CheckAuthForm;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
 
     // public $msg_number;
 
+    //Register
     public function getSignup(){
         return view('register');
     }
@@ -42,8 +44,9 @@ class AuthController extends Controller
         foreach ($user_id as $id) {
             $id = $id->id;
         } 
+        $user = Auth::user();
         // return redirect()->route('register.prove');
-       return redirect()->route('chat', ['user_id' => $id]);
+        return redirect()->route('welcome')->with('info', 'You are succesfully registred, please login');
 
     }
 
@@ -72,6 +75,7 @@ class AuthController extends Controller
     //     }
     // }
 
+    //Authentify
     public function postSignin(CheckAuthForm $request){
         
         if(!Auth::attempt($request->only('email', 'password'))){
@@ -88,11 +92,12 @@ class AuthController extends Controller
         }            
         // dd($id);
 
-        return redirect()->route('chat', ['user_id' => $id])->with('info', 'Congratulation!!!');
+        return redirect()->route('chat', ['user_id' => $id]);
  
     }
 
     public function getLogout() {
+        Cache::forget('user-is-online-' . Auth::user()->id);
         Auth::logout();
         return redirect()->route('welcome');
     }

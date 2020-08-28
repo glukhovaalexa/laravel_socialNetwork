@@ -20,25 +20,21 @@
         <div id="sidepanel">
             <div id="profile">
                 <div class="wrap">
-
-                    <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
-                    <p>{{ Auth::user()->name}}</p>
-                    <p>{{ Auth::user()->message}}</p>
-                    <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
-                    <div id="status-options">
-                        <ul>
-                            <li id="status-online" class="active"><span class="status-circle"></span>
-                                <p>Online</p>
-                            </li>
-                            <li id="status-offline"><span class="status-circle"></span>
-                                <p>Offline</p>
-                            </li>
-                        </ul>
+                    <div>
+                        <a href="{{ route('profile.settings', ['user_id' => Auth::user()->id]) }}">
+                            <img id="profile-img"
+                                src="{{ (!Auth::user()->avatar) ? asset('photo/no-avatar.jpg') :   Auth::user()->avatar }}"
+                                class="{{ (!Auth::check()) ? 'offline' : 'online' }}" alt="" />
+                            <p>{{ Auth::user()->name}}</p>
+                        </a>
                     </div>
+                    <a class="logout_sign" href="{{ route('logout') }}" title="Log out">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </a>
                 </div>
             </div>
             <div id="search">
-                <form class="search" method="POST" action="{{ route('chat', ['user_id' => Auth::user()->id])}}">
+                <form class="search" method="POST" action="{{ route('chat', ['user_id' => Auth::user()->id]) }}">
                     @csrf
                     <label for=""></label>
                     <input type="tel" name="search_contact" placeholder="Search contacts..." />
@@ -47,32 +43,55 @@
                 </form>
             </div>
             <div id="contacts">
-                @if($search_contact)
-                <ul>
-                    <h4>Результат поиска:</h4>
+                @if($search_contact === '')
+                <?php $search_contact = []; ?>
+                @endif
+                @if(count($search_contact))
+                <ul class="search_contacts">
+                    <div class="search_wrap">
+                        <h4 class="search_result">Результат поиска:</h4>
+                        <a href="{{ route('chat', ['user_id' => Auth::user()->id]) }}" title="close">
+                            <i class="fa fa-window-close" aria-hidden="true"></i>
+                        </a>
+                    </div>
                     @foreach($search_contact as $contact)
 
                     <li class="contact">
                         <div class="wrap">
                             <a href="{{ route('chat.user', ['friend_id' => "$contact->id"]) }}">
-                                <span class="contact-status online"></span>
-                                <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
+                                <span
+                                    class="contact-status {{ (isset($search_contact) || $contact->isOnline()) ? 'online' : 'ofline' }}"></span>
+                                <img src="
+                                    {{ (!isset($contact->photo)) ? asset('photo/no-avatar.jpg') : $contact->photo }}"
+                                    alt="" />
                                 <div class="meta">
                                     <p class="name">{{ $contact->name }}</p>
-                                    <p class="preview">You just got LITT up, Mike.</p>
+                                    <p class="preview"></p>
                                 </div>
                             </a>
                         </div>
                     </li>
                     <hr style="background-color:white">
                     @endforeach
+
+                </ul>
+                @elseif(!empty($search_contact))
+                <ul class="search_contacts">
+                    <div class="search_wrap">
+                        <h4 class="search_result">Результат поиска:</h4>
+                        <a href="{{ route('chat', ['user_id' => Auth::user()->id]) }}" title="close">
+                            <i class="fa fa-window-close" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <p>Контакт не найден</p>
+                    <hr style="background-color:white">
                 </ul>
                 @endif
                 <ul>
                     <h4>Ваши контакты:</h4>
                     <!-- All friends -->
                     @if(!$contacts->count())
-                    <p>У вас нет чатов!</p>
+                    <p>У вас нет контактов!</p>
                     @else
                     <?php $friend_id = ''; ?>
                     @foreach($contacts as $contact)
@@ -82,11 +101,13 @@
                             <?php $friend_id = ''; ?>
                             <?php $friend_id = $contact->id; ?>
                             <a href="{{ route('chat.user', ['friend_id' => "$contact->id"])}}">
-                                <span class="contact-status online"></span>
-                                <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
+                                <span
+                                    class="contact-status contact-status {{ (isset($contact) || $contact->isOnline()) ? 'online' : 'ofline'}}"></span>
+                                <img src="{{ (!$contact->photo) ? asset('photo/no-avatar.jpg') : $contact->photo }}"
+                                    alt="" />
                                 <div class="meta">
                                     <p class="name">{{ $contact->name }}</p>
-                                    <p class="preview">You just got LITT up, Mike.</p>
+
                                 </div>
                             </a>
                         </div>
@@ -96,19 +117,30 @@
                 </ul>
             </div>
             <div id="bottom-bar">
-                <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add
-                        contact</span></button>
                 <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
             </div>
         </div>
         <div class="content">
             @yield('chat')
             <!-- <div class="messages"> -->
-            <h3>Выберите чат</h3>
+            @if(!isset($friends))
+            <div class="chat_msg">
+                <div>
+                    <p>Выберите чат</p>
+                </div>
+
+            </div>
+            @endif
             <!-- </div> -->
         </div>
     </div>
-    <script src='{{ asset("../resources/js/script.js") }}'></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script>
+        let block = document.querySelectorAll(".messages");
+        console.log(block);
+        block[0].scrollTop = block[0].scrollHeight;
+    </script>
 </body>
 
 </html>

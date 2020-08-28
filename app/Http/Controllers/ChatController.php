@@ -3,55 +3,57 @@
 namespace App\Http\Controllers;
 
 use DB;
-use Auth;
+// use Auth;
 use App\User;
 use App\Message;
+use App\Friend;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Events\NewMessage;
 
 class ChatController extends Controller
 {
-    public function getChat($user_id, Request $request){
-        dd($request);
+
+    public function getChat($user_id, Request $request, $search_contact = []){
         $user = DB::table('users')->find($user_id);
 
         $contacts = Auth::user()->friends();
+
         $search_contact = $request->input('search_contact');
-        // dd($search_contact);
+
         if($search_contact){
-    
             if(stristr($search_contact, '38') === FALSE){
                 $search_contact = '38'. $search_contact;
+    
             }
             if($search_contact !== $user->phone){
             
             $search_contact = DB::table('users')
             ->where('phone', "$search_contact")->get();
-        // dd($search_contact);
-            }else{
-                $search_contact = '';
             }
-            
+        }else{
+            $search_contact = [];
         }
-        // dd($user, $contacts, $search_contact);
         return view('profile', [
         'user' => $user,
         'contacts' => $contacts,
         'search_contact' => $search_contact
         ]);
-        // return json_encode(array('success' => 1));
 
     }
 
 
     public function getUserChat($friend_id, $search_contact = ''){
-        // dd($friend_id);
-
         $user_id = Auth::user()->id;
 
         $contacts = Auth::user()->friends();
         $friends = $contacts->where('id', $friend_id);
-        // dd($friends);
+        if(!$friends->count()){
+            $posibleFriend = DB::table('users')->where('id', $friend_id)->get();
+        }else{
+            $posibleFriend = '';
+        }
+
         $messages = DB::table('messages')->leftJoin('users as user', 'user.id', '=', 'messages.user_id')->leftJoin('users as friend', 'friend.id', '=', 'messages.to_user_id')->select('user.id as user_id', 'user.name as user_name', 'friend.id as friend_id', 'friend.name as friend_name', 'messages.message as message', 'messages.created_at as created_at')
         ->where([
             ['user_id', "$user_id"],
@@ -63,32 +65,28 @@ class ChatController extends Controller
         ])
         ->get();
 
-        $last_msg = DB::table('messages')
-        ->where([
-            ['user_id', "$user_id"],
-            ['to_user_id', $friend_id],
-        ])
-        ->orWhere([
-            ['user_id', $friend_id],
-            ['to_user_id', $user_id],
-        ])->latest()->first();
+        $last_msg = [];
+        foreach($contacts as $contact){
+            $msg = DB::table('messages')->select('message')->where([
+                ['user_id', "$user_id"],
+                ['to_user_id', $contact->id],
+            ])->orWhere([
+                ['user_id', $contact->id],
+                ['to_user_id', $user_id],
+            ])->latest()->first();
+
+            $last_msg = $msg; 
+        }
 
         return view('chat', [
         'contacts' => $contacts,
         'messages' => $messages,
         'friends' => $friends,
-        'search_contact' => $search_contact,
         'friend_id' => $friend_id,
-        'last_msg' => $last_msg
+        'search_contact' => $search_contact,
+        'posibleFriend' => $posibleFriend,
+        'last_msg' => array($last_msg)
         ]);
-
-        //// вывод для vue в Json
-        // return response()->toArray()->json([
-        //     'contacts' => $contacts,
-        //     'messages' => $messages,
-        //     'friends' => $friends,
-        //     'last_msg' => $last_msg
-        // ]);
 
     }
 
@@ -101,19 +99,24 @@ class ChatController extends Controller
             $messages->save();
 
             event( new NewMessage($request->input('friend_id'), $messages));
+            $contacts = Auth::user()->friends();
+            $friends = $contacts->where('id', $request->input('friend_id'));
+           
+            if(!$friends->count()){
 
+                $this->makeFriends($request->input('user_id'), $request->input('friend_id'));
+            }
             return redirect()->route('chat.user', ['friend_id' => $request->input('friend_id')]);
 
+    }
 
-            // вывод для vue в Json
-            // $messagesSend = Message::create([
-            //     'user_id' => $request->input('user_id'),
-            //     'to_user_id' => $request->input('friend_id'),
-            //     'message' => $request->input('message')
-            // ]);
-                
-            // return $messagesSend->toArray()->json();
-
+    public function makeFriends($user_id, $friend_id){
+        Friend::create([
+            'user_id' => $user_id,
+            'friend_id' => $friend_id,
+            'accepted' => 1
+           ]);
+        return true;
     }
 
 }

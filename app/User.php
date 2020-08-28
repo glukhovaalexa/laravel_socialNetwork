@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'phone', 'name', 'email', 'password', 'country'
+        'phone', 'name', 'email', 'password', 'country', 'avatar_path'
     ];
 
     /**
@@ -63,5 +63,13 @@ class User extends Authenticatable
         $contacts = Contact::all();
         
         return $contacts;
+    }
+
+    public function addFriend($user_id){
+        $this->friendsOf()->attach($user_id);
+    }
+
+    public function isOnline(){
+        return Cache::has('user-is-online-' . $this->id);
     }
 }

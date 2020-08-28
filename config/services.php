@@ -30,10 +30,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    // 'nexmo' => [
-    //     'key' => env('3ecbaf52'),
-    //     'secret' => env('JA4GFj4Yf7zvyKHP'),
-    //     'sms_from' => 'SocialNet',
-    // ],
+    'nexmo' => [
+        'key' => env('3ecbaf52'),
+        'secret' => env('JA4GFj4Yf7zvyKHP'),
+        'sms_from' => 'SocialNet',
+    ],
 
 ];

@@ -17,7 +17,7 @@ class CreateFriendsTable extends Migration
             $table->id();
             $table->integer('user_id')->unsignet();
             $table->integer('friend_id')->unsignet();
-            $table->boolean('accepted');
+            $table->boolean('accepted')->dafault(1);
             $table->timestamps();
         });
     }

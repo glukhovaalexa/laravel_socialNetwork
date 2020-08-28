@@ -23,7 +23,7 @@
                     <div>
                         <a href="{{ route('profile.settings', ['user_id' => Auth::user()->id]) }}">
                             <img id="profile-img"
-                                src="{{ (!Auth::user()->avatar) ? asset('photo/no-avatar.jpg') :   Auth::user()->avatar }}"
+                                src="{{ (!Auth::user()->avatar_path) ? asset('photo/no-avatar.jpg') :   asset(Auth::user()->avatar_path) }}"
                                 class="{{ (!Auth::check()) ? 'offline' : 'online' }}" alt="" />
                             <p>{{ Auth::user()->name}}</p>
                         </a>

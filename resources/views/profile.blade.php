@@ -43,6 +43,7 @@
                 </form>
             </div>
             <div id="contacts">
+
                 @if($search_contact === '')
                 <?php $search_contact = []; ?>
                 @endif

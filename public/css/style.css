@@ -702,6 +702,10 @@ body {
   overflow-x: hidden;
   width: 100%;
 }
+#frame .content .messages  p{
+    margin-left: 3%;
+}
+
 @media screen and (max-width: 735px) {
   #frame .content .messages {
     max-height: calc(100% - 105px);

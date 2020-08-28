@@ -15,7 +15,6 @@ class ChatController extends Controller
 {
 
     public function getChat($user_id, Request $request, $search_contact = []){
-        $_SESSION = '';
         $user = DB::table('users')->find($user_id);
 
         $contacts = Auth::user()->friends();
@@ -35,6 +34,8 @@ class ChatController extends Controller
         }else{
             $search_contact = [];
         }
+        // dd($search_contact);
+
         return view('profile', [
         'user' => $user,
         'contacts' => $contacts,

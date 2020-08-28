@@ -18,6 +18,7 @@
     <div class="container">
         <div class="row">
             <div class="setting_logout">
+            
                 <div class="col-12">
                     <a class="logout_sign" href="{{ route('exit-settings', ['user_id' => Auth::user()->id]) }}"
                         title="Back to chat">
@@ -29,8 +30,8 @@
     </div>
     <div class="container">
 
-
-        <form class="settings_form" action="{{ route('profile.settings', ['user_id' => Auth::user()->id]) }}" method="post" enctype='multipart/form-data'>
+        <form class="settings_form" action="{{ route('profile.settings', ['user_id' => Auth::user()->id]) }}"
+            method="post" enctype='multipart/form-data'>
             @csrf
 
             <div class="row">
